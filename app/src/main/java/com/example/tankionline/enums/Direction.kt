@@ -1,4 +1,4 @@
-package com.example.tankionline
+package com.example.tankionline.enums
 
 enum class Direction {
     UP,

@@ -8,6 +8,9 @@ import com.example.tankionline.R
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.models.Coordinate
 
+private const val BULLET_WIDTH = 15
+private const val BULLET_HEIGHT = 15
+
 class BulletDrawer(val container: FrameLayout) {
     fun drawBullet(myTank: View, currentDirection: Direction) {
         val bullet = ImageView(container.context)

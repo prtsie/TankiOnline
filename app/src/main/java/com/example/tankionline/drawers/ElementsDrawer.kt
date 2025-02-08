@@ -10,6 +10,7 @@ import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
 import com.example.tankionline.models.Coordinate
 import com.example.tankionline.models.Element
+import com.example.tankionline.utils.getElementByCoordinates
 
 class ElementsDrawer(val container: FrameLayout) {
     var currentMaterial = Material.EMPTY
@@ -27,7 +28,7 @@ class ElementsDrawer(val container: FrameLayout) {
     }
 
     private fun drawOrReplaceView(coordinate: Coordinate) {
-        val viewOnCoordinate = getElementByCoordinates(coordinate)
+        val viewOnCoordinate = getElementByCoordinates(coordinate, elementsOnContainer)
         if (viewOnCoordinate == null) {
             drawView(coordinate)
             return
@@ -38,7 +39,7 @@ class ElementsDrawer(val container: FrameLayout) {
     }
 
     private fun eraseView(coordinate: Coordinate) {
-        val elemetOnCoordinate = getElementByCoordinates(coordinate)
+        val elemetOnCoordinate = getElementByCoordinates(coordinate, elementsOnContainer)
         if (elemetOnCoordinate != null) {
             val erasingView = container.findViewById<View>(elemetOnCoordinate.viewId)
             container.removeView(erasingView)
@@ -68,7 +69,4 @@ class ElementsDrawer(val container: FrameLayout) {
         container.addView(view)
         elementsOnContainer.add(Element(viewId, currentMaterial, coordinate))
     }
-
-    private fun getElementByCoordinates(coordinate: Coordinate) =
-        elementsOnContainer.firstOrNull { it.coordinate == coordinate }
 }

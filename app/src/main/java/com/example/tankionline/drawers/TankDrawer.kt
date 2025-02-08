@@ -7,6 +7,7 @@ import com.example.tankionline.binding
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.models.Coordinate
 import com.example.tankionline.models.Element
+import com.example.tankionline.utils.checkViewCanMoveThroughBorder
 
 class TankDrawer(val container: FrameLayout) {
     var currentDirection = Direction.UP
@@ -32,9 +33,8 @@ class TankDrawer(val container: FrameLayout) {
         }
 
         val nextCoordinate = Coordinate(layoutParams.topMargin, layoutParams.leftMargin)
-        if (checkTankCanMoveThroughBorder(
-                nextCoordinate,
-                myTank
+        if (myTank.checkViewCanMoveThroughBorder(
+                nextCoordinate
             ) && checkTankCanMoveThroughMaterial(nextCoordinate, elementsOnContainer)) {
             binding.container.removeView(myTank)
             binding.container.addView(myTank)
@@ -53,12 +53,6 @@ class TankDrawer(val container: FrameLayout) {
         }
         return true
     }
-
-    private fun checkTankCanMoveThroughBorder(coordinate: Coordinate, myTank: View) =
-        (coordinate.top >= 0 &&
-                coordinate.top + myTank.height <= binding.container.height &&
-                coordinate.left >= 0 &&
-                coordinate.left + myTank.width <= binding.container.width)
 
     private fun getTankCoordinates(topLeftCoordinate: Coordinate): List<Coordinate> {
         val coordinateList = mutableListOf<Coordinate>()

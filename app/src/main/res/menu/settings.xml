@@ -6,4 +6,9 @@
         android:icon="@drawable/baseline_edit_24"
         android:title="@string/settings"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_save"
+        android:icon="@drawable/baseline_save_24"
+        android:title="@string/save"
+        app:showAsAction="ifRoom" />
 </menu>

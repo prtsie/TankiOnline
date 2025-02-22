@@ -9,7 +9,6 @@ import android.view.KeyEvent.KEYCODE_DPAD_UP
 import android.view.KeyEvent.KEYCODE_SPACE
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.activity.enableEdgeToEdge
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val enemyDrawer by lazy {
-        EnemyDrawer(binding.container)
+        EnemyDrawer(binding.container, elementsDrawer.elementsOnContainer)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,7 +132,8 @@ class MainActivity : AppCompatActivity() {
         if (editMode) {
             return
         }
-        enemyDrawer.startEnemyDrawing(elementsDrawer.elementsOnContainer)
+        enemyDrawer.startEnemyCreation()
+        enemyDrawer.moveEnemyTanks()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

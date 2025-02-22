@@ -5,8 +5,11 @@ import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
 import com.example.tankionline.binding
 import com.example.tankionline.enums.Direction
+import com.example.tankionline.enums.Material
 import com.example.tankionline.utils.checkViewCanMoveThroughBorder
 import com.example.tankionline.utils.getElementByCoordinates
+import com.example.tankionline.utils.runOnUiThread
+import kotlin.random.Random
 
 class Tank(val element: Element, var direction: Direction) {
     fun move(direction: Direction, container: FrameLayout, elementsOnContainer: List<Element>) {
@@ -18,13 +21,25 @@ class Tank(val element: Element, var direction: Direction) {
         if (view.checkViewCanMoveThroughBorder(
                 nextCoordinate
             ) && element.checkTankCanMoveThroughMaterial(nextCoordinate, elementsOnContainer)) {
-            binding.container.removeView(view)
-            binding.container.addView(view)
+            emulateViewMoving(container, view)
             element.coordinate = nextCoordinate
         } else {
             element.coordinate = currentCoordinate
             (view.layoutParams as FrameLayout.LayoutParams).topMargin = currentCoordinate.top
             (view.layoutParams as FrameLayout.LayoutParams).leftMargin = currentCoordinate.left
+        }
+    }
+
+    private fun changeDirectionForEnemyTank() {
+        if (element.material == Material.ENEMY_TANK) {
+            val randomDirection = Direction.values()[Random.nextInt(Direction.values().size)]
+        }
+    }
+
+    private fun emulateViewMoving(container: FrameLayout, view: View) {
+        container.runOnUiThread {
+            binding.container.removeView(view)
+            binding.container.addView(view, 0)
         }
     }
 

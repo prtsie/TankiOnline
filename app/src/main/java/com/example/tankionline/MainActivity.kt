@@ -19,12 +19,15 @@ import com.example.tankionline.drawers.BulletDrawer
 import com.example.tankionline.drawers.ElementsDrawer
 import com.example.tankionline.drawers.EnemyDrawer
 import com.example.tankionline.drawers.GridDrawer
-import com.example.tankionline.drawers.TankDrawer
+import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Direction.DOWN
 import com.example.tankionline.enums.Direction.LEFT
 import com.example.tankionline.enums.Direction.RIGHT
 import com.example.tankionline.enums.Direction.UP
 import com.example.tankionline.enums.Material
+import com.example.tankionline.models.Coordinate
+import com.example.tankionline.models.Element
+import com.example.tankionline.models.Tank
 
 const val CELL_SIZE = 50
 
@@ -32,6 +35,15 @@ lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private var editMode = false
+    private val playerTank = Tank(
+        Element(
+            R.id.myTank,
+            Material.PLAYER_TANK,
+            Coordinate(0, 0),
+            Material.PLAYER_TANK.width,
+            Material.PLAYER_TANK.height
+        ), UP
+    )
     private val gridDrawer by lazy {
         GridDrawer(binding.container)
     }
@@ -42,10 +54,6 @@ class MainActivity : AppCompatActivity() {
 
     private val bulletDrawer by lazy {
         BulletDrawer(binding.container)
-    }
-
-    private val tankDrawer by lazy {
-        TankDrawer(binding.container)
     }
 
     private val levelStorage by lazy {
@@ -75,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
         elementsDrawer.drawElementsList(levelStorage.loadLevel())
         hideSettings()
+        elementsDrawer.elementsOnContainer.add(playerTank.element)
     }
 
     private fun switchEditMode() {
@@ -129,12 +138,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         when (keyCode) {
-            KEYCODE_DPAD_UP -> tankDrawer.move(binding.myTank, UP, elementsDrawer.elementsOnContainer)
-            KEYCODE_DPAD_DOWN -> tankDrawer.move(binding.myTank, DOWN, elementsDrawer.elementsOnContainer)
-            KEYCODE_DPAD_LEFT -> tankDrawer.move(binding.myTank, LEFT, elementsDrawer.elementsOnContainer)
-            KEYCODE_DPAD_RIGHT -> tankDrawer.move(binding.myTank, RIGHT, elementsDrawer.elementsOnContainer)
-            KEYCODE_SPACE -> bulletDrawer.makeBulletMove(binding.myTank, tankDrawer.currentDirection, elementsDrawer.elementsOnContainer)
+            KEYCODE_DPAD_UP -> move(UP)
+            KEYCODE_DPAD_DOWN -> move(DOWN)
+            KEYCODE_DPAD_LEFT -> move(LEFT)
+            KEYCODE_DPAD_RIGHT -> move(RIGHT)
+            KEYCODE_SPACE -> bulletDrawer.makeBulletMove(binding.myTank, playerTank.direction, elementsDrawer.elementsOnContainer)
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    private fun move(direction: Direction) {
+        playerTank.move(direction, binding.container, elementsDrawer.elementsOnContainer)
     }
 }

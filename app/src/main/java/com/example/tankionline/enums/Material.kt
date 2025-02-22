@@ -22,5 +22,6 @@ enum class Material(
     EAGLE(false, false, true, 1, CELLS_EAGLE_WIDTH, CELLS_EAGLE_HEIGHT, R.drawable.eagle),
     ENEMY_TANK_RESPAWN(true, true, false, 3, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.enemy_tank),
     PLAYER_TANK_RESPAWN(true, true, false, 1, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.tank),
-    ENEMY_TANK(false, false, true, 0, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.enemy_tank)
+    ENEMY_TANK(false, false, true, 0, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.enemy_tank),
+    PLAYER_TANK(false, false, true, 0, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.tank)
 }

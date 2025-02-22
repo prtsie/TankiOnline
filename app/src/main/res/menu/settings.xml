@@ -11,4 +11,9 @@
         android:icon="@drawable/baseline_save_24"
         android:title="@string/save"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_play"
+        android:icon="@drawable/baseline_play_arrow_24"
+        android:title="@string/play"
+        app:showAsAction="ifRoom" />
 </menu>

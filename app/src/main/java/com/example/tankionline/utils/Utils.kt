@@ -1,6 +1,9 @@
 package com.example.tankionline.utils
 
+import android.app.Activity
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
 import com.example.tankionline.CELL_SIZE
 import com.example.tankionline.binding
 import com.example.tankionline.models.Coordinate
@@ -28,4 +31,21 @@ fun getElementByCoordinates(coordinate: Coordinate, elementsOnContainer: List<El
         }
     }
     return null
+}
+
+fun Element.drawElement(container: FrameLayout) {
+    val view = ImageView(container.context)
+    val layoutParams = FrameLayout.LayoutParams(
+        this.material.width * CELL_SIZE,
+        this.material.height * CELL_SIZE
+    )
+    this.material.image?.let { view.setImageResource(it) }
+    layoutParams.topMargin = this.coordinate.top
+    layoutParams.leftMargin = this.coordinate.left
+    view.id = this.viewId
+    view.layoutParams = layoutParams
+    view.scaleType = ImageView.ScaleType.FIT_XY
+    (container.context as Activity).runOnUiThread {
+        container.addView(view)
+    }
 }

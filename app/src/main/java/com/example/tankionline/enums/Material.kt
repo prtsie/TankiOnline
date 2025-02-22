@@ -14,12 +14,13 @@ enum class Material(
     val elementsAmountOnScreen: Int,
     val width: Int,
     val height: Int,
-    val image: Int) {
-    EMPTY(true, true, true, 0, 0, 0, 0),
+    val image: Int?) {
+    EMPTY(true, true, true, 0, 0, 0, null),
     BRICK(false, false, true, 0, CELLS_SIMPLE_ELEMENT, CELLS_SIMPLE_ELEMENT, R.drawable.brick),
     CONCRETE(false, false, false, 0, CELLS_SIMPLE_ELEMENT, CELLS_SIMPLE_ELEMENT, R.drawable.concrete),
     GRASS(true, true, false, 0, CELLS_SIMPLE_ELEMENT, CELLS_SIMPLE_ELEMENT, R.drawable.grass),
     EAGLE(false, false, true, 1, CELLS_EAGLE_WIDTH, CELLS_EAGLE_HEIGHT, R.drawable.eagle),
     ENEMY_TANK_RESPAWN(true, true, false, 3, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.enemy_tank),
-    PLAYER_TANK_RESPAWN(true, true, false, 1, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.tank)
+    PLAYER_TANK_RESPAWN(true, true, false, 1, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.tank),
+    ENEMY_TANK(false, false, true, 0, CELLS_TANK_SIZE, CELLS_TANK_SIZE, R.drawable.enemy_tank)
 }

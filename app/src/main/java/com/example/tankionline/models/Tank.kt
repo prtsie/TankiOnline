@@ -4,24 +4,25 @@ import android.view.View
 import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
 import com.example.tankionline.binding
-import com.example.tankionline.drawers.BulletDrawer
+import com.example.tankionline.drawers.EnemyDrawer
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
 import com.example.tankionline.utils.checkIfChanceBiggerThanRandom
 import com.example.tankionline.utils.checkViewCanMoveThroughBorder
 import com.example.tankionline.utils.getElementByCoordinates
 import com.example.tankionline.utils.getTankByCoordinates
+import com.example.tankionline.utils.getViewCoordinate
 import com.example.tankionline.utils.runOnUiThread
 import kotlin.random.Random
 
 class Tank constructor(
     val element: Element,
     var direction: Direction,
-    val bulletDrawer: BulletDrawer
+    private val enemyDrawer: EnemyDrawer
 ) {
     fun move(direction: Direction, container: FrameLayout, elementsOnContainer: List<Element>) {
         val view = container.findViewById<View>(element.viewId) ?: return
-        val currentCoordinate = getTankCurrentCoordinate(view)
+        val currentCoordinate = view.getViewCoordinate()
         this.direction = direction
         view.rotation = direction.rotation
         val nextCoordinate = getTankNextCoordinate(view)
@@ -62,13 +63,6 @@ class Tank constructor(
         }
     }
 
-    private fun getTankCurrentCoordinate(tank: View): Coordinate {
-        return Coordinate(
-            (tank.layoutParams as FrameLayout.LayoutParams).topMargin,
-            (tank.layoutParams as FrameLayout.LayoutParams).leftMargin
-        )
-    }
-
     private fun getTankNextCoordinate(view: View): Coordinate {
         val layoutParams = view.layoutParams as FrameLayout.LayoutParams
         when (direction) {
@@ -96,7 +90,7 @@ class Tank constructor(
         for (anyCoordinate in getTankCoordinates(coordinate)) {
             var element = getElementByCoordinates(anyCoordinate, elementsOnContainer)
             if (element == null) {
-                element = getTankByCoordinates(anyCoordinate, bulletDrawer.enemyDrawer.tanks)
+                element = getTankByCoordinates(anyCoordinate, enemyDrawer.tanks)
             }
             if (element != null && !element.material.tankCanGoThrough) {
                 if (this == element) {

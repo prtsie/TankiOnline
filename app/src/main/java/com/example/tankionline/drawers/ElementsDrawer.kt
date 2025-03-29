@@ -43,6 +43,7 @@ class ElementsDrawer(val container: FrameLayout) {
             currentMaterial = element.material
             drawElement(element)
         }
+        currentMaterial = Material.EMPTY
     }
 
     private fun eraseView(coordinate: Coordinate) {

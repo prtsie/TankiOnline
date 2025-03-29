@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
 import com.example.tankionline.binding
+import com.example.tankionline.drawers.BulletDrawer
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
 import com.example.tankionline.utils.checkViewCanMoveThroughBorder
@@ -11,7 +12,11 @@ import com.example.tankionline.utils.getElementByCoordinates
 import com.example.tankionline.utils.runOnUiThread
 import kotlin.random.Random
 
-class Tank(val element: Element, var direction: Direction) {
+class Tank constructor(
+    val element: Element,
+    var direction: Direction,
+    val bulletDrawer: BulletDrawer
+) {
     fun move(direction: Direction, container: FrameLayout, elementsOnContainer: List<Element>) {
         val view = container.findViewById<View>(element.viewId) ?: return
         val currentCoordinate = getTankCurrentCoordinate(view)

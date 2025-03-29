@@ -7,8 +7,10 @@ import com.example.tankionline.binding
 import com.example.tankionline.drawers.BulletDrawer
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
+import com.example.tankionline.utils.checkIfChanceBiggerThanRandom
 import com.example.tankionline.utils.checkViewCanMoveThroughBorder
 import com.example.tankionline.utils.getElementByCoordinates
+import com.example.tankionline.utils.getTankByCoordinates
 import com.example.tankionline.utils.runOnUiThread
 import kotlin.random.Random
 
@@ -28,10 +30,20 @@ class Tank constructor(
             ) && element.checkTankCanMoveThroughMaterial(nextCoordinate, elementsOnContainer)) {
             emulateViewMoving(container, view)
             element.coordinate = nextCoordinate
+            generateRandomDirectionForEnemyTank()
         } else {
             element.coordinate = currentCoordinate
             (view.layoutParams as FrameLayout.LayoutParams).topMargin = currentCoordinate.top
             (view.layoutParams as FrameLayout.LayoutParams).leftMargin = currentCoordinate.left
+            changeDirectionForEnemyTank()
+        }
+    }
+
+    private fun generateRandomDirectionForEnemyTank() {
+        if (element.material != Material.ENEMY_TANK) {
+            return;
+        }
+        if (checkIfChanceBiggerThanRandom(10)) {
             changeDirectionForEnemyTank()
         }
     }
@@ -82,7 +94,10 @@ class Tank constructor(
 
     private fun Element.checkTankCanMoveThroughMaterial(coordinate: Coordinate, elementsOnContainer: List<Element>): Boolean {
         for (anyCoordinate in getTankCoordinates(coordinate)) {
-            val element = getElementByCoordinates(anyCoordinate, elementsOnContainer)
+            var element = getElementByCoordinates(anyCoordinate, elementsOnContainer)
+            if (element == null) {
+                element = getTankByCoordinates(anyCoordinate, bulletDrawer.enemyDrawer.tanks)
+            }
             if (element != null && !element.material.tankCanGoThrough) {
                 if (this == element) {
                     continue

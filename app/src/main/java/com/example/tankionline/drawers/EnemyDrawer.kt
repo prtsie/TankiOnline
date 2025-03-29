@@ -9,6 +9,7 @@ import com.example.tankionline.enums.Material
 import com.example.tankionline.models.Coordinate
 import com.example.tankionline.models.Element
 import com.example.tankionline.models.Tank
+import com.example.tankionline.utils.checkIfChanceBiggerThanRandom
 import com.example.tankionline.utils.drawElement
 
 private const val MAX_ENEMY_COUNT = 20
@@ -17,7 +18,8 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
     private val respawnList: List<Coordinate>
     private var enemyCount = 0
     private var currentCoordinate: Coordinate
-    private val tanks = mutableListOf<Tank>()
+    val tanks = mutableListOf<Tank>()
+    private var moveAllTanksThread: Thread? = null
 
     init {
         respawnList = getRespawnList()
@@ -48,24 +50,31 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
                 coordinate = currentCoordinate
             ),
             Direction.DOWN,
-            BulletDrawer(container)
+            BulletDrawer(container, elements, this)
         )
         enemyTank.element.drawElement(container)
-        elements.add(enemyTank.element)
         tanks.add(enemyTank)
     }
 
     fun moveEnemyTanks() {
-        Thread {
+        Thread({
             while (true) {
-                removeInconsistentTanks()
-                tanks.forEach {
-                    it.move(it.direction, container, elements)
-                    it.bulletDrawer.makeBulletMove(it, elements)
-                }
+                goThroughAllTanks()
                 Thread.sleep(400)
             }
-        }.start()
+        }).start()
+    }
+
+    private fun goThroughAllTanks() {
+        moveAllTanksThread = Thread( {
+            tanks.forEach {
+                it.move(it.direction, container, elements)
+                if(checkIfChanceBiggerThanRandom(10)) {
+                    it.bulletDrawer.makeBulletMove(it)
+                }
+            }
+        })
+        moveAllTanksThread?.start()
     }
 
     fun startEnemyCreation() {
@@ -78,18 +87,9 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
         }.start()
     }
 
-    private fun removeInconsistentTanks() {
-        tanks.removeAll(getInconsistentTanks())
-    }
-
-    private fun getInconsistentTanks(): List<Tank> {
-        val removingTanks = mutableListOf<Tank>()
-        val allTanksElements = elements.filter { it.material == Material.ENEMY_TANK }
-        tanks.forEach {
-            if (!allTanksElements.contains(it.element)) {
-                removingTanks.add(it)
-            }
-        }
-        return removingTanks
+    fun removeTank(tankIndex: Int) {
+        if (tankIndex < 0) return
+        moveAllTanksThread?.join()
+        tanks.removeAt(tankIndex)
     }
 }

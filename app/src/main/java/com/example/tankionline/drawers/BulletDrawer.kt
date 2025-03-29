@@ -107,7 +107,7 @@ class BulletDrawer(private val container: FrameLayout) {
     private fun removeView(element: Element?) {
         val activity = container.context as Activity
         activity.runOnUiThread {
-            container.removeView(activity.findViewById(element.viewId))
+            container.removeView(activity.findViewById(element!!.viewId))
         }
     }
 

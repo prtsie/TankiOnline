@@ -27,12 +27,14 @@ class Tank(val element: Element, var direction: Direction) {
             element.coordinate = currentCoordinate
             (view.layoutParams as FrameLayout.LayoutParams).topMargin = currentCoordinate.top
             (view.layoutParams as FrameLayout.LayoutParams).leftMargin = currentCoordinate.left
+            changeDirectionForEnemyTank()
         }
     }
 
     private fun changeDirectionForEnemyTank() {
         if (element.material == Material.ENEMY_TANK) {
-            val randomDirection = Direction.values()[Random.nextInt(Direction.values().size)]
+            val randomDirection = Direction.entries[Random.nextInt(Direction.entries.size)]
+            this.direction = randomDirection
         }
     }
 

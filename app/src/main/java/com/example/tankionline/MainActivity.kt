@@ -60,10 +60,18 @@ class MainActivity : AppCompatActivity() {
     private fun getPlayerTankCoordinate(width: Int, height: Int) = Coordinate(
         top = (height - height % 2)
         - (height - height % 2) % CELL_SIZE
-        - Material.PLAYER_TANK.height + CELL_SIZE,
+        - Material.PLAYER_TANK.height * CELL_SIZE,
         left = (width - width % (2 * CELL_SIZE)) / 2
         - Material.EAGLE.width / 2 * CELL_SIZE
         - Material.PLAYER_TANK.width * CELL_SIZE
+    )
+
+    private fun getEagleCoordinate(width: Int, height: Int) = Coordinate(
+        top = (height - height % 2)
+                - (height - height % 2) % CELL_SIZE
+                - Material.EAGLE.height * CELL_SIZE,
+        left = (width - width % (2 * CELL_SIZE)) / 2
+                - Material.EAGLE.width / 2 * CELL_SIZE
     )
 
     private val gridDrawer by lazy {

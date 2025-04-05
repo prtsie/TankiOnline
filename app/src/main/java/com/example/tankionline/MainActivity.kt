@@ -14,6 +14,9 @@ import android.view.View.VISIBLE
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.example.tankionline.GameCore.isPlaying
+import com.example.tankionline.GameCore.startOrPauseTheGame
 import com.example.tankionline.databinding.ActivityMainBinding
 import com.example.tankionline.drawers.BulletDrawer
 import com.example.tankionline.drawers.ElementsDrawer
@@ -35,6 +38,7 @@ lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private var editMode = false
+    private lateinit var item: MenuItem
 
     private lateinit var playerTank: Tank
     private lateinit var eagle: Element
@@ -162,6 +166,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.settings, menu)
+        item = menu!!.findItem(R.id.menu_play)
         return true
     }
 
@@ -176,22 +181,40 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_play -> {
-                startTheGame()
+                if (editMode) {
+                    return true
+                }
+                startOrPauseTheGame()
+                if(isPlaying()) {
+                    startTheGame()
+                } else {
+                    pauseTheGame()
+                }
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    private fun pauseTheGame() {
+        item.icon = ContextCompat.getDrawable(this, R.drawable.baseline_play_arrow_24)
+        GameCore.pauseTheGame()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pauseTheGame()
+    }
+
     private fun startTheGame() {
-        if (editMode) {
-            return
-        }
+        item.icon = ContextCompat.getDrawable(this, R.drawable.baseline_pause_24)
         enemyDrawer.startEnemyCreation()
-        enemyDrawer.moveEnemyTanks()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (!isPlaying()) {
+            return super.onKeyDown(keyCode, event)
+        }
         when (keyCode) {
             KEYCODE_DPAD_UP -> move(UP)
             KEYCODE_DPAD_DOWN -> move(DOWN)

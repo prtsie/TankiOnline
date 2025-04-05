@@ -2,6 +2,7 @@ package com.example.tankionline.drawers
 
 import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
+import com.example.tankionline.GameCore.isPlaying
 import com.example.tankionline.binding
 import com.example.tankionline.enums.CELLS_TANK_SIZE
 import com.example.tankionline.enums.Direction
@@ -20,6 +21,7 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
     private var currentCoordinate: Coordinate
     val tanks = mutableListOf<Tank>()
     lateinit var bulletDrawer: BulletDrawer
+    private var gameStarted = false
 
     init {
         respawnList = getRespawnList()
@@ -56,9 +58,12 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
         tanks.add(enemyTank)
     }
 
-    fun moveEnemyTanks() {
+    private fun moveEnemyTanks() {
         Thread({
             while (true) {
+                if (!isPlaying()) {
+                    continue
+                }
                 goThroughAllTanks()
                 Thread.sleep(400)
             }
@@ -75,13 +80,21 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
     }
 
     fun startEnemyCreation() {
+        if (gameStarted) {
+            return
+        }
+        gameStarted = true
         Thread {
             while (enemyCount < MAX_ENEMY_COUNT) {
+                if (!isPlaying()) {
+                    continue
+                }
                 drawEnemy()
                 enemyCount++
                 Thread.sleep(3000)
             }
         }.start()
+        moveEnemyTanks()
     }
 
     fun removeTank(tankIndex: Int) {

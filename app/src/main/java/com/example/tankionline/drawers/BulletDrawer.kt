@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.example.tankionline.CELL_SIZE
+import com.example.tankionline.GameCore.isPlaying
 import com.example.tankionline.R
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
@@ -45,6 +46,9 @@ class BulletDrawer(
     private fun moveAllBullets() {
         Thread({
             while (true) {
+                if (!isPlaying()) {
+                    continue
+                }
                 interactWithAllBullets()
                 Thread.sleep(30)
             }

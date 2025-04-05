@@ -1,7 +1,7 @@
 package com.example.tankionline.drawers
 
 import android.widget.FrameLayout
-import com.example.tankionline.CELL_SIZE
+import com.example.tankionline.activities.CELL_SIZE
 import com.example.tankionline.GameCore
 import com.example.tankionline.sounds.MainSoundPlayer
 import com.example.tankionline.enums.CELLS_TANK_SIZE
@@ -107,7 +107,16 @@ class EnemyDrawer(
         moveEnemyTanks()
     }
 
+    private fun isAllTanksDestroyed(): Boolean {
+        return enemyCount == MAX_ENEMY_COUNT && tanks.toList().isEmpty()
+    }
+
+    private fun getPlayerScore() = enemyCount * 100
+
     fun removeTank(tankIndex: Int) {
         tanks.removeAt(tankIndex)
+        if (isAllTanksDestroyed()) {
+            gameCore.playerWon(getPlayerScore())
+        }
     }
 }

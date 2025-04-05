@@ -1,5 +1,7 @@
-package com.example.tankionline
+package com.example.tankionline.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_DPAD_DOWN
@@ -14,6 +16,9 @@ import android.view.View.VISIBLE
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.tankionline.GameCore
+import com.example.tankionline.LevelStorage
+import com.example.tankionline.R
 import com.example.tankionline.databinding.ActivityMainBinding
 import com.example.tankionline.drawers.BulletDrawer
 import com.example.tankionline.drawers.ElementsDrawer
@@ -123,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         binding.editorBrick.setOnClickListener { elementsDrawer.currentMaterial =  Material.BRICK }
         binding.editorGrass.setOnClickListener { elementsDrawer.currentMaterial =  Material.GRASS }
         binding.editorConcrete.setOnClickListener { elementsDrawer.currentMaterial =  Material.CONCRETE }
-        binding.container.setOnTouchListener {_, event ->
+        binding.container.setOnTouchListener { _, event ->
             if (!editMode) {
                 return@setOnTouchListener true
             }
@@ -253,5 +258,12 @@ class MainActivity : AppCompatActivity() {
         if (enemyDrawer.tanks.isEmpty()) {
             soundManager.tankStop()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == SCORE_REQUEST_CODE) {
+            recreate()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

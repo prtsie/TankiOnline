@@ -2,8 +2,8 @@ package com.example.tankionline.models
 
 import android.view.View
 import android.widget.FrameLayout
-import com.example.tankionline.CELL_SIZE
-import com.example.tankionline.binding
+import com.example.tankionline.activities.CELL_SIZE
+import com.example.tankionline.activities.binding
 import com.example.tankionline.drawers.EnemyDrawer
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material

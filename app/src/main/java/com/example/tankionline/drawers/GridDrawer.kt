@@ -3,7 +3,7 @@ package com.example.tankionline.drawers
 import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
-import com.example.tankionline.CELL_SIZE
+import com.example.tankionline.activities.CELL_SIZE
 
 class GridDrawer(private val container: FrameLayout?) {
     private val allLines = mutableListOf<View>()

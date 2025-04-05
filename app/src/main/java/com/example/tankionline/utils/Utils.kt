@@ -4,8 +4,8 @@ import android.app.Activity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.example.tankionline.CELL_SIZE
-import com.example.tankionline.binding
+import com.example.tankionline.activities.CELL_SIZE
+import com.example.tankionline.activities.binding
 import com.example.tankionline.models.Coordinate
 import com.example.tankionline.models.Element
 import com.example.tankionline.models.Tank

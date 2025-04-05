@@ -4,7 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.example.tankionline.CELL_SIZE
+import com.example.tankionline.activities.CELL_SIZE
 import com.example.tankionline.GameCore
 import com.example.tankionline.R
 import com.example.tankionline.sounds.MainSoundPlayer

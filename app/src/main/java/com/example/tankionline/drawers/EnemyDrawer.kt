@@ -3,6 +3,7 @@ package com.example.tankionline.drawers
 import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
 import com.example.tankionline.GameCore.isPlaying
+import com.example.tankionline.SoundManager
 import com.example.tankionline.binding
 import com.example.tankionline.enums.CELLS_TANK_SIZE
 import com.example.tankionline.enums.Direction
@@ -71,6 +72,11 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
     }
 
     private fun goThroughAllTanks() {
+        if (tanks.isNotEmpty()) {
+            SoundManager.tankMove()
+        } else {
+            SoundManager.tankStop()
+        }
         tanks.toList().forEach {
             it.move(it.direction, container, elements)
             if(checkIfChanceBiggerThanRandom(10)) {
@@ -98,7 +104,6 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
     }
 
     fun removeTank(tankIndex: Int) {
-        if (tankIndex < 0) return
         tanks.removeAt(tankIndex)
     }
 }

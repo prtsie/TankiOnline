@@ -28,6 +28,7 @@ import com.example.tankionline.enums.Material
 import com.example.tankionline.models.Coordinate
 import com.example.tankionline.models.Element
 import com.example.tankionline.models.Tank
+import com.example.tankionline.sounds.MainSoundPlayer
 
 const val CELL_SIZE = 50
 
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val soundManager by lazy {
-        SoundManager(this)
+        MainSoundPlayer(this)
     }
 
     private fun createTank(elementWidth: Int, elementHeight: Int): Tank {
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        soundManager.loadSounds()
         supportActionBar?.title = "Menu"
 
         binding.editorClear.setOnClickListener { elementsDrawer.currentMaterial =  Material.EMPTY }

@@ -3,7 +3,7 @@ package com.example.tankionline.drawers
 import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
 import com.example.tankionline.GameCore
-import com.example.tankionline.SoundManager
+import com.example.tankionline.sounds.MainSoundPlayer
 import com.example.tankionline.enums.CELLS_TANK_SIZE
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
@@ -18,7 +18,7 @@ private const val MAX_ENEMY_COUNT = 20
 class EnemyDrawer(
     private val container: FrameLayout,
     private val elements: MutableList<Element>,
-    private val soundManager: SoundManager,
+    private val mainSoundPlayer: MainSoundPlayer,
     private val gameCore: GameCore
 ) {
     private val respawnList: List<Coordinate>
@@ -77,9 +77,9 @@ class EnemyDrawer(
 
     private fun goThroughAllTanks() {
         if (tanks.isNotEmpty()) {
-            soundManager.tankMove()
+            mainSoundPlayer.tankMove()
         } else {
-            soundManager.tankStop()
+            mainSoundPlayer.tankStop()
         }
         tanks.toList().forEach {
             it.move(it.direction, container, elements)

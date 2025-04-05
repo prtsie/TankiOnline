@@ -2,9 +2,8 @@ package com.example.tankionline.drawers
 
 import android.widget.FrameLayout
 import com.example.tankionline.CELL_SIZE
-import com.example.tankionline.GameCore.isPlaying
+import com.example.tankionline.GameCore
 import com.example.tankionline.SoundManager
-import com.example.tankionline.binding
 import com.example.tankionline.enums.CELLS_TANK_SIZE
 import com.example.tankionline.enums.Direction
 import com.example.tankionline.enums.Material
@@ -16,7 +15,12 @@ import com.example.tankionline.utils.drawElement
 
 private const val MAX_ENEMY_COUNT = 20
 
-class EnemyDrawer(private val container: FrameLayout, private val elements: MutableList<Element>) {
+class EnemyDrawer(
+    private val container: FrameLayout,
+    private val elements: MutableList<Element>,
+    private val soundManager: SoundManager,
+    private val gameCore: GameCore
+) {
     private val respawnList: List<Coordinate>
     private var enemyCount = 0
     private var currentCoordinate: Coordinate
@@ -62,7 +66,7 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
     private fun moveEnemyTanks() {
         Thread({
             while (true) {
-                if (!isPlaying()) {
+                if (!gameCore.isPlaying()) {
                     continue
                 }
                 goThroughAllTanks()
@@ -73,9 +77,9 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
 
     private fun goThroughAllTanks() {
         if (tanks.isNotEmpty()) {
-            SoundManager.tankMove()
+            soundManager.tankMove()
         } else {
-            SoundManager.tankStop()
+            soundManager.tankStop()
         }
         tanks.toList().forEach {
             it.move(it.direction, container, elements)
@@ -92,7 +96,7 @@ class EnemyDrawer(private val container: FrameLayout, private val elements: Muta
         gameStarted = true
         Thread {
             while (enemyCount < MAX_ENEMY_COUNT) {
-                if (!isPlaying()) {
+                if (!gameCore.isPlaying()) {
                     continue
                 }
                 drawEnemy()

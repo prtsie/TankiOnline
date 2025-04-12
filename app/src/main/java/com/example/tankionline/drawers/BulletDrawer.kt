@@ -169,7 +169,7 @@ class BulletDrawer(
 
     private fun stopGameIfNecessary(element: Element) {
         if (element.material == Material.PLAYER_TANK || element.material == Material.EAGLE) {
-          gameCore.destroyPlayerOrBase()
+          gameCore.destroyPlayerOrBase(enemyDrawer.getPlayerScore())
         }
     }
 
